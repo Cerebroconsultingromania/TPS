@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 7%;
+    --foreground: 0 0% 100%;
+  }
+
+  * {
+    @apply border-white/10;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-charcoal text-white antialiased;
+  }
+
+  ::selection {
+    @apply bg-tennis/30 text-white;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .perspective-\[1000px\] {
+    perspective: 1000px;
+  }
+
+  .rotate-y-\[-8deg\] {
+    transform: rotateY(-8deg);
+  }
+
+  .rotate-y-\[-12deg\] {
+    transform: rotateY(-12deg);
+  }
+}
