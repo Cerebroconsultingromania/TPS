@@ -1,0 +1,129 @@
+{
+  "hero": {
+    "main": "/images/brand/junior-action-blue.jpeg",
+    "leftTop": "/images/brand/court-frag-lines.png",
+    "leftBottom": "/images/brand/junior-action-navy.jpeg",
+    "rightTop": "/images/brand/star-trophy-blue.png",
+    "rightBottom": "/images/brand/star-gold-trophy.png"
+  },
+  "parallaxBand": "/images/brand/court-blue-aerial.jpg",
+  "gallery": [
+    { "label": "Agility", "src": "/images/brand/junior-action-navy.jpeg" },
+    { "label": "Strength", "src": "/images/brand/court-frag-net.png" },
+    { "label": "Speed", "src": "/images/brand/junior-action-blue.jpeg" },
+    { "label": "Conditioning", "src": "/images/brand/court-frag-diagonal.png" }
+  ],
+  "problem": [
+    "/images/brand/court-frag-t.png",
+    "/images/brand/court-frag-shadow.png",
+    "/images/brand/court-frag-lines.png"
+  ],
+  "solution": [
+    "/images/brand/star-trophy-winner.png",
+    "/images/brand/junior-action-blue.jpeg",
+    "/images/brand/court-frag-net.png",
+    "/images/brand/star-gold-trophy.png",
+    "/images/brand/junior-action-navy.jpeg"
+  ],
+  "programs": [
+    "/images/brand/star-trophy-blue.png",
+    "/images/brand/junior-action-navy.jpeg",
+    "/images/brand/court-blue-collage.png"
+  ],
+  "manual": {
+    "cover": "/images/brand/court-blue-collage.png",
+    "pageSpread": "/images/brand/court-frag-diagonal.png",
+    "progression": "/images/brand/court-frag-lines.png",
+    "methodology": "/images/brand/court-frag-net.png",
+    "exercise": "/images/brand/junior-action-blue.jpeg"
+  },
+  "author": "/images/brand/junior-action-navy.jpeg",
+  "systemPageHero": "/images/brand/court-blue-aerial.jpg",
+  "star": {
+    "portraitBlue": "/images/brand/star-trophy-blue.png",
+    "portraitWinner": "/images/brand/star-trophy-winner.png",
+    "goldTrophy": "/images/brand/star-gold-trophy.png",
+    "duo": "/images/brand/star-duo.png"
+  },
+  "pages": {
+    "about": {
+      "hero": "/images/brand/court-blue-aerial.jpg",
+      "portrait": "/images/brand/junior-action-navy.jpeg"
+    },
+    "system": {
+      "hero": "/images/brand/court-blue-aerial.jpg"
+    },
+    "blog": {
+      "hero": "/images/brand/court-frag-diagonal.png"
+    },
+    "videoLibrary": {
+      "hero": "/images/brand/star-gold-trophy.png"
+    },
+    "affiliate": {
+      "hero": "/images/brand/court-blue-collage.png"
+    }
+  },
+  "videoCategories": [
+    {
+      "id": "speed",
+      "image": "/images/brand/junior-action-blue.jpeg",
+      "videoUrl": "/videos/star-exercise-01.mp4"
+    },
+    {
+      "id": "agility",
+      "image": "/images/brand/star-trophy-blue.png",
+      "videoUrl": "/videos/star-exercise-02.mp4"
+    },
+    {
+      "id": "strength",
+      "image": "/images/brand/star-trophy-winner.png",
+      "videoUrl": ""
+    },
+    {
+      "id": "coordination",
+      "image": "/images/brand/court-frag-net.png",
+      "videoUrl": ""
+    },
+    {
+      "id": "movement-skills",
+      "image": "/images/brand/junior-action-navy.jpeg",
+      "videoUrl": "/videos/star-exercise-01.mp4"
+    },
+    {
+      "id": "tennis-conditioning",
+      "image": "/images/brand/star-gold-trophy.png",
+      "videoUrl": "/videos/star-exercise-02.mp4"
+    },
+    {
+      "id": "warm-up",
+      "image": "/images/brand/court-frag-lines.png",
+      "videoUrl": ""
+    }
+  ],
+  "blog": [
+    {
+      "slug": "why-random-exercises-fail-junior-tennis-players",
+      "image": "/images/brand/court-frag-shadow.png"
+    },
+    {
+      "slug": "long-term-athlete-development-tennis",
+      "image": "/images/brand/star-duo.png"
+    },
+    {
+      "slug": "speed-training-junior-tennis-players",
+      "image": "/images/brand/junior-action-blue.jpeg"
+    },
+    {
+      "slug": "strength-training-myths-junior-tennis",
+      "image": "/images/brand/star-trophy-winner.png"
+    },
+    {
+      "slug": "periodization-junior-tennis-physical-development",
+      "image": "/images/brand/court-blue-collage.png"
+    },
+    {
+      "slug": "implementing-complete-system-academy",
+      "image": "/images/brand/star-gold-trophy.png"
+    }
+  ]
+}

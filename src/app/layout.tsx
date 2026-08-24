@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import { Inter, Bebas_Neue } from "next/font/google";
-import { Navbar } from "@/components/layout/Navbar";
-import { Footer } from "@/components/layout/Footer";
-import { ScrollSceneWrapper } from "@/components/layout/ScrollSceneWrapper";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
+import { SiteChrome } from "@/components/layout/SiteChrome";
+import { SiteMediaProvider } from "@/components/providers/SiteMediaProvider";
+import { getSiteMedia } from "@/lib/site-media";
 import { BRAND } from "@/lib/utils";
 import "./globals.css";
 
@@ -12,8 +12,7 @@ const inter = Inter({
   display: "swap",
 });
 
-const bebasNeue = Bebas_Neue({
-  weight: "400",
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   variable: "--font-display",
   display: "swap",
@@ -40,18 +39,19 @@ export const metadata: Metadata = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const media = await getSiteMedia();
+
   return (
-    <html lang="en" className={`${inter.variable} ${bebasNeue.variable}`}>
+    <html lang="en" className={`${inter.variable} ${plusJakarta.variable}`}>
       <body className="font-sans">
-        <ScrollSceneWrapper />
-        <Navbar />
-        <main className="relative z-[2] isolate">{children}</main>
-        <Footer />
+        <SiteMediaProvider media={media}>
+          <SiteChrome>{children}</SiteChrome>
+        </SiteMediaProvider>
       </body>
     </html>
   );

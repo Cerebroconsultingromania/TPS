@@ -7,7 +7,7 @@ import { testimonials } from "@/data/testimonials";
 
 export function TestimonialsSection() {
   return (
-    <section className="relative bg-cream py-24 lg:py-32">
+    <section data-analytics-section="testimonials" className="relative bg-cream py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <FadeIn className="mx-auto max-w-3xl text-center">
           <Badge variant="outline" className="border-charcoal/20">

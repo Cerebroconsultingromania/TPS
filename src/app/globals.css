@@ -4,12 +4,12 @@
 
 @layer base {
   :root {
-    --background: 0 0% 7%;
-    --foreground: 0 0% 100%;
+    --background: 210 40% 98%;
+    --foreground: 222 47% 11%;
   }
 
   * {
-    @apply border-white/10;
+    @apply border-surface-muted;
   }
 
   html {
@@ -17,11 +17,11 @@
   }
 
   body {
-    @apply bg-charcoal text-white antialiased;
+    @apply bg-surface text-ink antialiased;
   }
 
   ::selection {
-    @apply bg-tennis/30 text-white;
+    @apply bg-court/20 text-court-dark;
   }
 }
 
@@ -49,5 +49,17 @@
 
   .rotate-y-\[-12deg\] {
     transform: rotateY(-12deg);
+  }
+
+  .section-light {
+    @apply bg-white text-ink;
+  }
+
+  .section-soft {
+    @apply bg-court-soft text-ink;
+  }
+
+  .section-court {
+    @apply bg-court-gradient text-white;
   }
 }

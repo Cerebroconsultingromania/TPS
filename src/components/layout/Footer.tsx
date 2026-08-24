@@ -24,26 +24,26 @@ const footerLinks = {
 
 export function Footer() {
   return (
-    <footer className="border-t border-white/10 bg-charcoal-900">
+    <footer className="border-t border-white/10 bg-court-dark text-white">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-24">
         <div className="grid gap-12 lg:grid-cols-4">
           <div className="lg:col-span-1">
             <Link href="/" className="inline-block">
-              <span className="font-display text-2xl font-bold text-white">
-                TPDS<span className="text-tennis">™</span>
+              <span className="font-display text-2xl font-extrabold text-white">
+                TPDS<span className="text-tennis-brand">™</span>
               </span>
             </Link>
-            <p className="mt-4 text-sm leading-relaxed text-white/50">
+            <p className="mt-4 text-sm leading-relaxed text-white/70">
               {BRAND.systemName}. The complete physical development framework
               for building elite junior tennis athletes.
             </p>
-            <p className="mt-4 text-xs uppercase tracking-widest text-tennis">
+            <p className="mt-4 text-xs font-semibold uppercase tracking-widest text-tennis-brand">
               {BRAND.tagline}
             </p>
           </div>
 
           <div>
-            <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/40">
+            <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/50">
               The System
             </h4>
             <ul className="space-y-3">
@@ -51,7 +51,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/60 transition-colors hover:text-tennis"
+                    className="text-sm text-white/70 transition-colors hover:text-tennis-brand"
                   >
                     {link.label}
                   </Link>
@@ -61,7 +61,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/40">
+            <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/50">
               Company
             </h4>
             <ul className="space-y-3">
@@ -69,7 +69,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/60 transition-colors hover:text-tennis"
+                    className="text-sm text-white/70 transition-colors hover:text-tennis-brand"
                   >
                     {link.label}
                   </Link>
@@ -79,7 +79,7 @@ export function Footer() {
           </div>
 
           <div>
-            <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/40">
+            <h4 className="mb-4 text-xs font-semibold uppercase tracking-widest text-white/50">
               Built For
             </h4>
             <ul className="space-y-3">
@@ -87,7 +87,7 @@ export function Footer() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm text-white/60 transition-colors hover:text-tennis"
+                    className="text-sm text-white/70 transition-colors hover:text-tennis-brand"
                   >
                     {link.label}
                   </Link>
@@ -97,23 +97,23 @@ export function Footer() {
           </div>
         </div>
 
-        <Separator className="my-12" />
+        <Separator className="my-12 bg-white/10" />
 
         <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-          <p className="text-xs text-white/30">
+          <p className="text-xs text-white/40">
             © {new Date().getFullYear()} Tennis Performance Development
             System™. All rights reserved.
           </p>
           <div className="flex gap-6">
             <Link
               href="#"
-              className="text-xs text-white/30 hover:text-white/60"
+              className="text-xs text-white/40 hover:text-white/70"
             >
               Privacy Policy
             </Link>
             <Link
               href="#"
-              className="text-xs text-white/30 hover:text-white/60"
+              className="text-xs text-white/40 hover:text-white/70"
             >
               Terms of Service
             </Link>

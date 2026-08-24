@@ -53,7 +53,6 @@ export const authorBio = {
   name: "Dr. Andrei Vasilescu",
   title: "Elite Strength & Conditioning Coach",
   subtitle: "Creator of the Tennis Performance Development System™",
-  image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80",
   bio: [
     "With over 15 years of experience in elite sports performance, Dr. Andrei Vasilescu stands as one of Romania's leading Strength & Conditioning coaches, specializing in junior tennis athlete development.",
     "His methodology combines sports science research with practical coaching experience, having worked with national federation programs, elite academies, and competitive junior players across Europe.",

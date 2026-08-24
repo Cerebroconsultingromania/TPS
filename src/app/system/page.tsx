@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import {
   BookOpen,
@@ -20,6 +19,8 @@ import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { BRAND } from "@/lib/utils";
 import { systemComponents } from "@/data/content";
+import { useSiteMedia } from "@/components/providers/SiteMediaProvider";
+import { PageHeroBanner } from "@/components/shared/PageHeroBanner";
 
 const icons = [BookOpen, Video, Brain, ClipboardList, GraduationCap];
 
@@ -64,50 +65,39 @@ const audiences = [
 ];
 
 export default function SystemPage() {
+  const { pages } = useSiteMedia();
+
   return (
     <>
-      {/* Hero */}
-      <section className="relative flex min-h-[70vh] items-center bg-charcoal pt-24">
-        <div className="absolute inset-0">
-          <Image
-            src="https://images.unsplash.com/photo-1595435934249-5df7ed4e1c0e?w=1920&q=80"
-            alt="Junior tennis training"
-            fill
-            className="object-cover opacity-20"
-          />
-          <div className="absolute inset-0 bg-gradient-to-r from-charcoal via-charcoal/95 to-charcoal/80" />
-        </div>
-
-        <div className="relative mx-auto max-w-7xl px-6 py-20 lg:px-8">
-          <FadeIn>
-            <Badge className="mb-4">Complete Development System</Badge>
-            <h1 className="max-w-4xl font-display text-5xl font-bold text-white md:text-6xl lg:text-7xl">
-              {BRAND.systemName}
-            </h1>
-            <p className="mt-6 max-w-2xl text-xl text-white/60">
-              {BRAND.usp}
-            </p>
-            <p className="mt-4 text-lg text-tennis">{BRAND.tagline}</p>
-            <div className="mt-10 flex flex-col gap-4 sm:flex-row">
-              <Button size="lg" asChild>
-                <Link href="#invest">Invest in the System — €497</Link>
-              </Button>
-              <Button variant="secondary" size="lg" asChild>
-                <Link href="/video-library">Preview Sample Content</Link>
-              </Button>
-            </div>
-          </FadeIn>
-        </div>
-      </section>
+      <PageHeroBanner image={pages.system.hero} className="flex min-h-[70vh] items-center pb-0">
+        <FadeIn>
+          <Badge className="mb-4 border-white/20 bg-white/10 text-white">
+            Complete Development System
+          </Badge>
+          <h1 className="max-w-4xl font-display text-5xl font-bold text-white md:text-6xl lg:text-7xl">
+            {BRAND.systemName}
+          </h1>
+          <p className="mt-6 max-w-2xl text-xl text-white/80">{BRAND.usp}</p>
+          <p className="mt-4 text-lg text-tennis-brand">{BRAND.tagline}</p>
+          <div className="mt-10 flex flex-col gap-4 sm:flex-row">
+            <Button size="lg" asChild>
+              <Link href="#invest">Invest in the System — €497</Link>
+            </Button>
+            <Button variant="secondary" size="lg" asChild>
+              <Link href="/video-library">Preview Sample Content</Link>
+            </Button>
+          </div>
+        </FadeIn>
+      </PageHeroBanner>
 
       {/* What You're Investing In */}
-      <section className="bg-cream py-24">
+      <section className="bg-surface py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <FadeIn className="text-center">
-            <h2 className="font-display text-4xl font-bold text-charcoal md:text-5xl">
+            <h2 className="font-display text-4xl font-bold text-ink md:text-5xl">
               What You&apos;re Investing In
             </h2>
-            <p className="mx-auto mt-4 max-w-2xl text-charcoal/60">
+            <p className="mx-auto mt-4 max-w-2xl text-ink-muted">
               You&apos;re not buying a book, a video library, or individual
               exercises. You&apos;re investing in a complete physical development
               framework.
@@ -121,16 +111,16 @@ export default function SystemPage() {
                 <StaggerItem key={component.title}>
                   <div
                     id={component.title.includes("Manual") ? "manual" : undefined}
-                    className="h-full rounded-sm border border-charcoal/10 bg-white p-8"
+                    className="h-full rounded-sm border border-surface-muted bg-white p-8"
                   >
-                    <Icon className="mb-4 h-6 w-6 text-tennis-dark" />
-                    <h3 className="font-display text-xl font-bold text-charcoal">
+                    <Icon className="mb-4 h-6 w-6 text-court" />
+                    <h3 className="font-display text-xl font-bold text-ink">
                       {component.title}
                     </h3>
-                    <p className="mt-1 text-xs uppercase tracking-wider text-tennis-dark">
+                    <p className="mt-1 text-xs uppercase tracking-wider text-court">
                       {component.subtitle}
                     </p>
-                    <p className="mt-3 text-sm text-charcoal/60">
+                    <p className="mt-3 text-sm text-ink-muted">
                       {component.description}
                     </p>
                   </div>
@@ -149,7 +139,7 @@ export default function SystemPage() {
               <h2 className="font-display text-4xl font-bold text-white md:text-5xl">
                 Everything Included in the System
               </h2>
-              <p className="mt-4 text-white/60">
+              <p className="mt-4 text-white/80">
                 One investment. Complete access. Lifetime updates.
               </p>
             </FadeIn>
@@ -157,8 +147,8 @@ export default function SystemPage() {
               <ul className="space-y-4">
                 {systemIncludes.map((item) => (
                   <li key={item} className="flex items-start gap-3">
-                    <Check className="mt-0.5 h-5 w-5 shrink-0 text-tennis" />
-                    <span className="text-white/80">{item}</span>
+                    <Check className="mt-0.5 h-5 w-5 shrink-0 text-tennis-brand" />
+                    <span className="text-white/90">{item}</span>
                   </li>
                 ))}
               </ul>
@@ -171,19 +161,19 @@ export default function SystemPage() {
       <section className="bg-cream py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <FadeIn className="text-center">
-            <h2 className="font-display text-4xl font-bold text-charcoal">
+            <h2 className="font-display text-4xl font-bold text-ink">
               Built For Every Level
             </h2>
           </FadeIn>
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {audiences.map((audience, i) => (
               <FadeIn key={audience.title} delay={i * 0.1}>
-                <div className="rounded-sm border border-charcoal/10 bg-white p-6 text-center">
-                  <audience.icon className="mx-auto mb-4 h-8 w-8 text-tennis-dark" />
-                  <h3 className="font-display text-lg font-bold text-charcoal">
+                <div className="rounded-sm border border-surface-muted bg-white p-6 text-center">
+                  <audience.icon className="mx-auto mb-4 h-8 w-8 text-court" />
+                  <h3 className="font-display text-lg font-bold text-ink">
                     {audience.title}
                   </h3>
-                  <p className="mt-2 text-sm text-charcoal/60">
+                  <p className="mt-2 text-sm text-ink-muted">
                     {audience.description}
                   </p>
                 </div>
@@ -197,7 +187,9 @@ export default function SystemPage() {
       <section id="invest" className="bg-charcoal py-24">
         <div className="mx-auto max-w-3xl px-6 text-center lg:px-8">
           <FadeIn>
-            <Badge className="mb-4">Complete System Access</Badge>
+            <Badge className="mb-4 border-white/20 bg-white/10 text-white">
+              Complete System Access
+            </Badge>
             <h2 className="font-display text-4xl font-bold text-white md:text-5xl">
               Invest in the Complete System
             </h2>
@@ -206,31 +198,31 @@ export default function SystemPage() {
               initial={{ scale: 0.95, opacity: 0 }}
               whileInView={{ scale: 1, opacity: 1 }}
               viewport={{ once: true }}
-              className="mx-auto mt-12 max-w-md rounded-sm border-2 border-tennis bg-charcoal-100/50 p-8"
+              className="mx-auto mt-12 max-w-md rounded-sm border-2 border-white/20 bg-white/10 p-8 backdrop-blur-sm"
             >
-              <p className="text-sm uppercase tracking-widest text-white/40">
+              <p className="text-sm uppercase tracking-widest text-white/70">
                 One-Time Investment
               </p>
-              <p className="mt-2 font-display text-6xl font-bold text-tennis">
+              <p className="mt-2 font-display text-6xl font-bold text-tennis-brand">
                 €497
               </p>
-              <p className="mt-2 text-white/50">
+              <p className="mt-2 text-white/70">
                 Complete system access · Lifetime updates
               </p>
 
               <Separator className="my-8" />
 
-              <ul className="space-y-3 text-left text-sm text-white/70">
+              <ul className="space-y-3 text-left text-sm text-white/90">
                 <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-tennis" />
+                  <Check className="h-4 w-4 text-tennis-brand" />
                   Full system — not individual components
                 </li>
                 <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-tennis" />
+                  <Check className="h-4 w-4 text-tennis-brand" />
                   30-day satisfaction guarantee
                 </li>
                 <li className="flex items-center gap-2">
-                  <Check className="h-4 w-4 text-tennis" />
+                  <Check className="h-4 w-4 text-tennis-brand" />
                   Instant digital access
                 </li>
               </ul>
@@ -239,9 +231,9 @@ export default function SystemPage() {
                 Get the Complete System
               </Button>
 
-              <p className="mt-4 text-xs text-white/30">
+              <p className="mt-4 text-xs text-white/60">
                 Academy bulk pricing available —{" "}
-                <Link href="/affiliate" className="text-tennis hover:underline">
+                <Link href="/affiliate" className="text-tennis-brand hover:underline">
                   contact us
                 </Link>
               </p>

@@ -6,10 +6,12 @@ import { FadeIn } from "@/components/shared/FadeIn";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BRAND } from "@/lib/utils";
+import { useSiteMedia } from "@/components/providers/SiteMediaProvider";
 
 export function ManualSection() {
+  const { manual } = useSiteMedia();
   return (
-    <section className="relative overflow-hidden bg-cream py-24 lg:py-32">
+    <section data-analytics-section="manual" className="relative overflow-hidden bg-cream py-24 lg:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-20">
           {/* 3D Book Mockup */}
@@ -70,8 +72,8 @@ export function ManualSection() {
               {/* Floating preview cards */}
               <div className="absolute -right-8 top-1/4 hidden w-40 rounded-sm border border-charcoal/10 bg-white p-3 shadow-lg lg:block">
                 <Image
-                  src="https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=200&q=80"
-                  alt="Exercise diagram"
+                  src={manual.progression}
+                  alt="Exercise progressions"
                   width={160}
                   height={100}
                   className="rounded-sm object-cover"
@@ -83,7 +85,7 @@ export function ManualSection() {
 
               <div className="absolute -left-8 bottom-1/4 hidden w-40 rounded-sm border border-charcoal/10 bg-white p-3 shadow-lg lg:block">
                 <Image
-                  src="https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=200&q=80"
+                  src={manual.methodology}
                   alt="Training methodology"
                   width={160}
                   height={100}

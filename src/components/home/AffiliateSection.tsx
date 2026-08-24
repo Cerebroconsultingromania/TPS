@@ -11,7 +11,7 @@ const icons = [BarChart3, BarChart3, Building2, GraduationCap];
 
 export function AffiliateSection() {
   return (
-    <section className="relative overflow-hidden bg-charcoal py-24 lg:py-32">
+    <section data-analytics-section="affiliate" className="relative overflow-hidden bg-charcoal py-24 lg:py-32">
       <div className="absolute inset-0 bg-gradient-radial from-tennis/5 via-transparent to-transparent" />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">

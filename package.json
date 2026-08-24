@@ -3,9 +3,17 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack -H 127.0.0.1 -p 3000",
+    "site": "node scripts/run-dev.mjs",
+    "dev": "npm run site",
+    "dev:3006": "npm run site",
+    "dev:turbo": "next dev --turbopack -H 127.0.0.1 -p 3006",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -H 127.0.0.1 -p 3000",
+    "start:3005": "next start -H 127.0.0.1 -p 3005",
+    "start:3006": "next start -H 127.0.0.1 -p 3006",
+    "start:3007": "next start -H 127.0.0.1 -p 3007",
+    "stop:3006": "bash scripts/stop-3006.sh",
+    "restart:3006": "node scripts/free-port.mjs 3006 && npm run build && npm run start:3006",
     "lint": "next lint"
   },
   "dependencies": {

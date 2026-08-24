@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { blogPosts } from "@/data/blog";
 import { BRAND } from "@/lib/utils";
+import { getSiteMedia, getBlogImage } from "@/lib/site-media";
 
 export function generateStaticParams() {
   return blogPosts.map((post) => ({ slug: post.slug }));
@@ -21,20 +22,25 @@ export default async function BlogPostPage({
 
   if (!post) notFound();
 
+  const media = await getSiteMedia();
+  const image = getBlogImage(media, slug);
+
   return (
     <>
       <article className="bg-charcoal pt-32">
         <div className="mx-auto max-w-3xl px-6 lg:px-8">
           <Link
             href="/blog"
-            className="inline-flex items-center gap-2 text-sm text-white/50 hover:text-tennis"
+            className="inline-flex items-center gap-2 text-sm text-white/70 hover:text-tennis-brand"
           >
             <ArrowLeft className="h-4 w-4" />
             Back to Resources
           </Link>
 
-          <div className="mt-8 flex items-center gap-3 text-xs text-white/40">
-            <Badge>{post.category}</Badge>
+          <div className="mt-8 flex items-center gap-3 text-xs text-white/70">
+            <Badge className="border-white/20 bg-white/10 text-white">
+              {post.category}
+            </Badge>
             <span>{post.readTime}</span>
             <span>
               {new Date(post.date).toLocaleDateString("en-US", {
@@ -51,7 +57,7 @@ export default async function BlogPostPage({
 
           <div className="relative mt-10 aspect-[16/9] overflow-hidden rounded-sm">
             <Image
-              src={post.image}
+              src={image}
               alt={post.title}
               fill
               className="object-cover"
@@ -61,9 +67,9 @@ export default async function BlogPostPage({
         </div>
       </article>
 
-      <section className="bg-cream py-16">
+      <section className="bg-surface py-16">
         <div className="mx-auto max-w-3xl px-6 lg:px-8">
-          <div className="prose prose-lg max-w-none text-charcoal/80">
+          <div className="prose prose-lg max-w-none text-ink-muted">
             <p className="text-xl leading-relaxed">{post.excerpt}</p>
 
             <p className="mt-6">
@@ -73,7 +79,7 @@ export default async function BlogPostPage({
               the principles of Long-Term Athlete Development (LTAD).
             </p>
 
-            <h2 className="mt-10 font-display text-2xl font-bold text-charcoal">
+            <h2 className="mt-10 font-display text-2xl font-bold text-ink">
               The Problem with Random Training
             </h2>
             <p>
@@ -83,7 +89,7 @@ export default async function BlogPostPage({
               connect physical development to on-court performance outcomes.
             </p>
 
-            <h2 className="mt-10 font-display text-2xl font-bold text-charcoal">
+            <h2 className="mt-10 font-display text-2xl font-bold text-ink">
               A System-Based Approach
             </h2>
             <p>
@@ -93,11 +99,11 @@ export default async function BlogPostPage({
               training methodologies, and personalized program templates.
             </p>
 
-            <blockquote className="my-8 border-l-4 border-tennis pl-6 italic text-charcoal/70">
+            <blockquote className="my-8 border-l-4 border-court pl-6 italic text-ink-muted">
               &ldquo;{BRAND.tagline}&rdquo;
             </blockquote>
 
-            <h2 className="mt-10 font-display text-2xl font-bold text-charcoal">
+            <h2 className="mt-10 font-display text-2xl font-bold text-ink">
               Key Takeaways
             </h2>
             <ul className="mt-4 space-y-2">
@@ -109,11 +115,11 @@ export default async function BlogPostPage({
             </ul>
           </div>
 
-          <div className="mt-16 rounded-sm border border-charcoal/10 bg-white p-8 text-center">
-            <h3 className="font-display text-2xl font-bold text-charcoal">
+          <div className="mt-16 rounded-sm border border-surface-muted bg-white p-8 text-center">
+            <h3 className="font-display text-2xl font-bold text-ink">
               Ready to Implement the Complete System?
             </h3>
-            <p className="mt-2 text-charcoal/60">
+            <p className="mt-2 text-ink-muted">
               Stop reading about it. Start building elite junior athletes.
             </p>
             <Button size="lg" className="mt-6" asChild>

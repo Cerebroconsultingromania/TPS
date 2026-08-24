@@ -15,7 +15,6 @@ export const blogPosts = [
     category: "Junior Development",
     readTime: "8 min read",
     date: "2026-05-28",
-    image: "https://images.unsplash.com/photo-1595435934249-5df7ed4e1c0e?w=800&q=80",
   },
   {
     slug: "long-term-athlete-development-tennis",
@@ -25,7 +24,6 @@ export const blogPosts = [
     category: "Coach Education",
     readTime: "12 min read",
     date: "2026-05-20",
-    image: "https://images.unsplash.com/photo-1551958219-acbc608c6377?w=800&q=80",
   },
   {
     slug: "speed-training-junior-tennis-players",
@@ -35,7 +33,6 @@ export const blogPosts = [
     category: "Speed Training",
     readTime: "10 min read",
     date: "2026-05-12",
-    image: "https://images.unsplash.com/photo-1622279457486-62dcc4a431d6?w=800&q=80",
   },
   {
     slug: "strength-training-myths-junior-tennis",
@@ -45,7 +42,6 @@ export const blogPosts = [
     category: "Strength Training",
     readTime: "7 min read",
     date: "2026-05-05",
-    image: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?w=800&q=80",
   },
   {
     slug: "periodization-junior-tennis-physical-development",
@@ -55,7 +51,6 @@ export const blogPosts = [
     category: "Tennis Fitness",
     readTime: "11 min read",
     date: "2026-04-28",
-    image: "https://images.unsplash.com/photo-1534152226879-3798736f0702?w=800&q=80",
   },
   {
     slug: "implementing-complete-system-academy",
@@ -65,6 +60,5 @@ export const blogPosts = [
     category: "Coach Education",
     readTime: "9 min read",
     date: "2026-04-15",
-    image: "https://images.unsplash.com/photo-1554068865-24cecd4e34b8?w=800&q=80",
   },
 ] as const;

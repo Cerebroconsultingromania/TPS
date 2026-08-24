@@ -9,12 +9,12 @@ interface TennisRacketProps {
 }
 
 const SCROLL_POSITIONS = [
-  { x: -2.6, y: -0.6, z: -0.3, rotY: 0.45, rotZ: -0.55, rotX: 0.15 },
-  { x: -2.1, y: 0.5, z: 0.1, rotY: 0.9, rotZ: -0.35, rotX: 0.05 },
-  { x: -1.4, y: 1.3, z: -0.4, rotY: -0.15, rotZ: -0.75, rotX: 0.2 },
-  { x: -2.8, y: 0.2, z: 0.4, rotY: 1.15, rotZ: -0.25, rotX: -0.1 },
-  { x: -1.8, y: -1.4, z: 0.2, rotY: 0.6, rotZ: -0.5, rotX: 0.25 },
-  { x: -2.4, y: 1.0, z: -0.2, rotY: 0.25, rotZ: -0.65, rotX: 0.1 },
+  { x: -2.4, y: -0.5, z: 0.2, rotY: 0.5, rotZ: -0.5, rotX: 0.1 },
+  { x: -1.9, y: 0.6, z: 0.4, rotY: 0.85, rotZ: -0.3, rotX: 0.05 },
+  { x: -1.2, y: 1.2, z: 0.1, rotY: -0.1, rotZ: -0.7, rotX: 0.15 },
+  { x: -2.5, y: 0.3, z: 0.5, rotY: 1.1, rotZ: -0.2, rotX: -0.05 },
+  { x: -1.6, y: -1.2, z: 0.3, rotY: 0.55, rotZ: -0.45, rotX: 0.2 },
+  { x: -2.1, y: 0.9, z: 0.15, rotY: 0.3, rotZ: -0.6, rotX: 0.08 },
 ];
 
 function getScrollPosition(progress: number) {
@@ -35,6 +35,34 @@ function getScrollPosition(progress: number) {
   };
 }
 
+const frameMaterial = new THREE.MeshPhysicalMaterial({
+  color: "#111111",
+  metalness: 0.35,
+  roughness: 0.28,
+  clearcoat: 0.6,
+  clearcoatRoughness: 0.2,
+});
+
+const accentMaterial = new THREE.MeshStandardMaterial({
+  color: "#CCFF00",
+  metalness: 0.2,
+  roughness: 0.45,
+  emissive: "#4D6600",
+  emissiveIntensity: 0.08,
+});
+
+const stringMaterial = new THREE.MeshStandardMaterial({
+  color: "#E8E8E8",
+  metalness: 0.75,
+  roughness: 0.15,
+});
+
+const gripMaterial = new THREE.MeshStandardMaterial({
+  color: "#CCFF00",
+  roughness: 0.88,
+  metalness: 0,
+});
+
 export function TennisRacket({ scrollProgress }: TennisRacketProps) {
   const groupRef = useRef<THREE.Group>(null);
   const scrollRef = useRef(scrollProgress);
@@ -48,57 +76,60 @@ export function TennisRacket({ scrollProgress }: TennisRacketProps) {
     const pos = getScrollPosition(scrollRef.current);
 
     groupRef.current.position.x = pos.x;
-    groupRef.current.position.y = pos.y + Math.sin(t * 0.7) * 0.08;
+    groupRef.current.position.y = pos.y + Math.sin(t * 0.7) * 0.06;
     groupRef.current.position.z = pos.z;
-    groupRef.current.rotation.x = pos.rotX + Math.sin(t * 0.4) * 0.05;
+    groupRef.current.rotation.x = pos.rotX + Math.sin(t * 0.4) * 0.04;
     groupRef.current.rotation.y = pos.rotY;
     groupRef.current.rotation.z = pos.rotZ;
   });
 
   return (
-    <group ref={groupRef} scale={0.95}>
-      <mesh position={[0, 0.85, 0]}>
-        <torusGeometry args={[0.58, 0.028, 12, 48]} />
-        <meshStandardMaterial
-          color="#111111"
-          metalness={0.45}
-          roughness={0.35}
-          emissive="#1a1a1a"
-          emissiveIntensity={0.1}
-        />
+    <group ref={groupRef} scale={1.05}>
+      {/* Elliptical frame */}
+      <mesh position={[0, 0.9, 0]} scale={[0.82, 1, 1]} material={frameMaterial}>
+        <torusGeometry args={[0.62, 0.032, 16, 64]} />
       </mesh>
 
-      {Array.from({ length: 12 }).map((_, i) => (
+      {/* Inner yellow accent rim */}
+      <mesh position={[0, 0.9, 0.01]} scale={[0.78, 0.96, 1]} material={accentMaterial}>
+        <torusGeometry args={[0.58, 0.014, 12, 64]} />
+      </mesh>
+
+      {/* Strings */}
+      {Array.from({ length: 14 }).map((_, i) => (
         <mesh
           key={`h-${i}`}
-          position={[0, 0.85, 0]}
-          rotation={[0, 0, ((i - 5.5) * 0.85) / 6]}
+          position={[0, 0.9, 0.005]}
+          rotation={[0, 0, ((i - 6.5) * 0.82) / 7]}
+          material={stringMaterial}
         >
-          <boxGeometry args={[1.05, 0.004, 0.004]} />
-          <meshStandardMaterial color="#bdbdbd" metalness={0.6} roughness={0.25} />
+          <boxGeometry args={[1.15, 0.003, 0.003]} />
         </mesh>
       ))}
 
-      {Array.from({ length: 14 }).map((_, i) => (
-        <mesh key={`v-${i}`} position={[((i - 6.5) * 0.78) / 7, 0.85, 0]}>
-          <boxGeometry args={[0.004, 1.05, 0.004]} />
-          <meshStandardMaterial color="#bdbdbd" metalness={0.6} roughness={0.25} />
+      {Array.from({ length: 16 }).map((_, i) => (
+        <mesh
+          key={`v-${i}`}
+          position={[((i - 7.5) * 0.82) / 8, 0.9, 0.005]}
+          material={stringMaterial}
+        >
+          <boxGeometry args={[0.003, 1.12, 0.003]} />
         </mesh>
       ))}
 
-      <mesh position={[0, 0.28, 0]}>
-        <boxGeometry args={[0.09, 0.32, 0.045]} />
-        <meshStandardMaterial color="#111111" metalness={0.4} roughness={0.4} />
+      {/* Throat */}
+      <mesh position={[0, 0.32, 0]} material={frameMaterial}>
+        <boxGeometry args={[0.1, 0.34, 0.05]} />
       </mesh>
 
-      <mesh position={[0, -0.12, 0]}>
-        <cylinderGeometry args={[0.042, 0.052, 0.75, 16]} />
-        <meshStandardMaterial color="#222222" roughness={0.75} />
+      {/* Handle */}
+      <mesh position={[0, -0.1, 0]} material={frameMaterial}>
+        <cylinderGeometry args={[0.045, 0.055, 0.78, 20]} />
       </mesh>
 
-      <mesh position={[0, -0.38, 0]}>
-        <cylinderGeometry args={[0.048, 0.048, 0.38, 16]} />
-        <meshStandardMaterial color="#C8E632" roughness={0.85} />
+      {/* Grip */}
+      <mesh position={[0, -0.36, 0]} material={gripMaterial}>
+        <cylinderGeometry args={[0.05, 0.05, 0.42, 20]} />
       </mesh>
     </group>
   );
