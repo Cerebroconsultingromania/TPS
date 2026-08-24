@@ -37,6 +37,9 @@ yarn-error.log*
 # runtime analytics store
 data/analytics.json
 
+# local conversation export (may contain secrets)
+conversation-export/
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
