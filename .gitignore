@@ -40,6 +40,9 @@ data/analytics.json
 # local conversation export (may contain secrets)
 conversation-export/
 
+# personal Claude Code permission overrides
+.claude/settings.local.json
+
 # typescript
 *.tsbuildinfo
 next-env.d.ts
