@@ -6,9 +6,10 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { AdminMediaEditor } from "@/components/admin/AdminMediaEditor";
 import { AdminAnalyticsDashboard } from "@/components/admin/AdminAnalyticsDashboard";
-import { LogOut, ExternalLink, ImageIcon, BarChart3 } from "lucide-react";
+import { AdminAffiliatesPanel } from "@/components/admin/AdminAffiliatesPanel";
+import { LogOut, ExternalLink, ImageIcon, BarChart3, Users } from "lucide-react";
 
-type Tab = "media" | "analytics";
+type Tab = "media" | "analytics" | "affiliates";
 
 export default function AdminPage() {
   const router = useRouter();
@@ -57,6 +58,18 @@ export default function AdminPage() {
               <BarChart3 className="h-4 w-4" />
               Analitice
             </button>
+            <button
+              type="button"
+              onClick={() => setTab("affiliates")}
+              className={`flex items-center gap-2 rounded-md px-4 py-2 text-sm font-medium transition-colors ${
+                tab === "affiliates"
+                  ? "bg-white text-court shadow-soft"
+                  : "text-ink-muted hover:text-ink"
+              }`}
+            >
+              <Users className="h-4 w-4" />
+              Afiliați
+            </button>
           </nav>
 
           <div className="flex flex-wrap gap-2">
@@ -74,7 +87,9 @@ export default function AdminPage() {
         </div>
       </header>
 
-      {tab === "media" ? <AdminMediaEditor embedded /> : <AdminAnalyticsDashboard />}
+      {tab === "media" && <AdminMediaEditor embedded />}
+      {tab === "analytics" && <AdminAnalyticsDashboard />}
+      {tab === "affiliates" && <AdminAffiliatesPanel />}
     </div>
   );
 }

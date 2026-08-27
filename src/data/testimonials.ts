@@ -77,7 +77,7 @@ export const authorBio = {
 export const affiliateBenefits = [
   {
     title: "Competitive Commissions",
-    description: "Earn up to 30% commission on every system sale through your unique affiliate link.",
+    description: "Earn $30 (33.7% commission) on every $89 system sale through your unique affiliate link.",
   },
   {
     title: "Affiliate Dashboard",
