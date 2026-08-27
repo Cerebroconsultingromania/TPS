@@ -11,6 +11,7 @@ import {
   Plus,
   Loader2,
   Copy,
+  Trash2,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
@@ -113,6 +114,14 @@ export function AdminAffiliatesPanel() {
     await navigator.clipboard.writeText(link);
   }
 
+  async function deleteAffiliate(id: number, name: string) {
+    if (!confirm(`Ștergi definitiv afiliatul "${name}" și toate vânzările lui?`)) return;
+    setBusyId(id);
+    await fetch(`/api/admin/affiliates/${id}`, { method: "DELETE" });
+    await load();
+    setBusyId(null);
+  }
+
   if (!affiliates) {
     return (
       <div className="flex justify-center py-20">
@@ -177,6 +186,15 @@ export function AdminAffiliatesPanel() {
                       <XCircle className="mr-1 h-4 w-4" />
                       Respinge
                     </Button>
+                    <Button
+                      size="sm"
+                      variant="outline"
+                      disabled={busyId === a.id}
+                      onClick={() => deleteAffiliate(a.id, a.full_name)}
+                      className="text-red-600 hover:bg-red-50"
+                    >
+                      <Trash2 className="h-4 w-4" />
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -226,14 +244,25 @@ export function AdminAffiliatesPanel() {
                     </p>
                   </div>
                 </div>
-                <Button
-                  size="sm"
-                  variant="outline"
-                  onClick={() => setSaleFormFor(saleFormFor === a.id ? null : a.id)}
-                >
-                  <Plus className="mr-1 h-4 w-4" />
-                  Adaugă vânzare
-                </Button>
+                <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setSaleFormFor(saleFormFor === a.id ? null : a.id)}
+                  >
+                    <Plus className="mr-1 h-4 w-4" />
+                    Adaugă vânzare
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    disabled={busyId === a.id}
+                    onClick={() => deleteAffiliate(a.id, a.full_name)}
+                    className="text-red-600 hover:bg-red-50"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
 
               {saleFormFor === a.id && (
