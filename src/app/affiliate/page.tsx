@@ -100,27 +100,32 @@ export default function AffiliatePage() {
     }
 
     setStatus("loading");
-    const res = await fetch("/api/affiliate/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        fullName: form.fullName,
-        email: form.email,
-        partnerType: form.partnerType,
-        message: form.message,
-        password: form.password,
-      }),
-    });
-    const data = await res.json().catch(() => ({}));
+    try {
+      const res = await fetch("/api/affiliate/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          fullName: form.fullName,
+          email: form.email,
+          partnerType: form.partnerType,
+          message: form.message,
+          password: form.password,
+        }),
+      });
+      const data = await res.json().catch(() => ({}));
 
-    if (!res.ok) {
+      if (!res.ok) {
+        setStatus("error");
+        setError(data.error || "A apărut o eroare. Încearcă din nou.");
+        return;
+      }
+
+      setStatus("success");
+      setForm(initialForm);
+    } catch {
       setStatus("error");
-      setError(data.error || "A apărut o eroare. Încearcă din nou.");
-      return;
+      setError("Nu s-a putut trimite formularul. Verifică conexiunea și încearcă din nou.");
     }
-
-    setStatus("success");
-    setForm(initialForm);
   }
 
   return (
@@ -310,9 +315,15 @@ export default function AffiliatePage() {
                     onChange={(e) => update("partnerType", e.target.value)}
                     className="w-full rounded-sm border border-white/20 bg-white/10 px-4 py-3 text-white focus:border-tennis-brand focus:outline-none"
                   >
-                    <option value="coach" className="text-ink">Individual Coach</option>
-                    <option value="academy" className="text-ink">Tennis Academy</option>
-                    <option value="influencer" className="text-ink">Content Creator / Influencer</option>
+                    <option value="coach" style={{ color: "#0F172A", backgroundColor: "#FFFFFF" }}>
+                      Individual Coach
+                    </option>
+                    <option value="academy" style={{ color: "#0F172A", backgroundColor: "#FFFFFF" }}>
+                      Tennis Academy
+                    </option>
+                    <option value="influencer" style={{ color: "#0F172A", backgroundColor: "#FFFFFF" }}>
+                      Content Creator / Influencer
+                    </option>
                   </select>
                 </div>
                 <div>
@@ -361,7 +372,11 @@ export default function AffiliatePage() {
                   You&apos;ll use this email and password to log into your affiliate dashboard
                   once your application is approved.
                 </p>
-                {error && <p className="text-sm text-red-300">{error}</p>}
+                {error && (
+                  <div className="rounded-sm border border-red-400/40 bg-red-500/10 px-4 py-3 text-sm font-medium text-red-200">
+                    {error}
+                  </div>
+                )}
                 <Button size="lg" className="w-full" type="submit" disabled={status === "loading"}>
                   {status === "loading" ? "Submitting…" : "Submit Application"}
                 </Button>
