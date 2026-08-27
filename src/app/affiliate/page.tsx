@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
-import { Handshake, BarChart3, Building2, GraduationCap, Check, ArrowRight } from "lucide-react";
+import { Handshake, BarChart3, Building2, GraduationCap, Check, ArrowRight, ChevronDown } from "lucide-react";
 import { FadeIn, StaggerContainer, StaggerItem } from "@/components/shared/FadeIn";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -57,6 +57,64 @@ const partnerTypes = [
     ],
   },
 ];
+
+const PARTNER_TYPE_OPTIONS = [
+  { value: "coach", label: "Individual Coach" },
+  { value: "academy", label: "Tennis Academy" },
+  { value: "influencer", label: "Content Creator / Influencer" },
+];
+
+function PartnerTypeSelect({
+  value,
+  onChange,
+}: {
+  value: string;
+  onChange: (value: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const selected = PARTNER_TYPE_OPTIONS.find((o) => o.value === value) ?? PARTNER_TYPE_OPTIONS[0];
+
+  useEffect(() => {
+    function handleClickOutside(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) setOpen(false);
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
+  return (
+    <div ref={ref} className="relative">
+      <button
+        type="button"
+        onClick={() => setOpen((o) => !o)}
+        className="flex w-full items-center justify-between rounded-sm border border-white/20 bg-white/10 px-4 py-3 text-left text-white focus:border-tennis-brand focus:outline-none"
+      >
+        <span>{selected.label}</span>
+        <ChevronDown className={`h-4 w-4 text-white/60 transition-transform ${open ? "rotate-180" : ""}`} />
+      </button>
+      {open && (
+        <div className="absolute z-20 mt-2 w-full overflow-hidden rounded-sm border border-surface-muted bg-white shadow-card">
+          {PARTNER_TYPE_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              type="button"
+              onClick={() => {
+                onChange(opt.value);
+                setOpen(false);
+              }}
+              className={`block w-full px-4 py-3 text-left text-sm text-ink hover:bg-court-soft ${
+                opt.value === value ? "bg-court-soft font-semibold" : ""
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 type FormState = {
   fullName: string;
@@ -310,21 +368,10 @@ export default function AffiliatePage() {
                   <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-white/70">
                     Partner Type
                   </label>
-                  <select
+                  <PartnerTypeSelect
                     value={form.partnerType}
-                    onChange={(e) => update("partnerType", e.target.value)}
-                    className="w-full rounded-sm border border-white/20 bg-white/10 px-4 py-3 text-white focus:border-tennis-brand focus:outline-none"
-                  >
-                    <option value="coach" style={{ color: "#0F172A", backgroundColor: "#FFFFFF" }}>
-                      Individual Coach
-                    </option>
-                    <option value="academy" style={{ color: "#0F172A", backgroundColor: "#FFFFFF" }}>
-                      Tennis Academy
-                    </option>
-                    <option value="influencer" style={{ color: "#0F172A", backgroundColor: "#FFFFFF" }}>
-                      Content Creator / Influencer
-                    </option>
-                  </select>
+                    onChange={(v) => update("partnerType", v)}
+                  />
                 </div>
                 <div>
                   <label className="mb-2 block text-xs font-semibold uppercase tracking-wider text-white/70">
