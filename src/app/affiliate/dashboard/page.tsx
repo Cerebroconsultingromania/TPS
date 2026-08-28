@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Copy, Check, LogOut, TrendingUp, DollarSign, MousePointerClick, Receipt } from "lucide-react";
+import { Copy, Check, LogOut, TrendingUp, DollarSign, MousePointerClick, Receipt, Pencil, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
@@ -40,6 +40,10 @@ export default function AffiliateDashboardPage() {
   const [data, setData] = useState<MeResponse | null>(null);
   const [loading, setLoading] = useState(true);
   const [copied, setCopied] = useState(false);
+  const [editingLink, setEditingLink] = useState(false);
+  const [linkInput, setLinkInput] = useState("");
+  const [linkError, setLinkError] = useState("");
+  const [savingLink, setSavingLink] = useState(false);
 
   useEffect(() => {
     fetch("/api/affiliate/me")
@@ -66,6 +70,40 @@ export default function AffiliateDashboardPage() {
     await navigator.clipboard.writeText(data.affiliate.referralLink);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
+  }
+
+  function startEditingLink() {
+    if (!data) return;
+    setLinkInput(data.affiliate.referralCode);
+    setLinkError("");
+    setEditingLink(true);
+  }
+
+  async function saveLink() {
+    setSavingLink(true);
+    setLinkError("");
+    const res = await fetch("/api/affiliate/referral-code", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ code: linkInput }),
+    });
+    const json = await res.json().catch(() => ({}));
+    setSavingLink(false);
+
+    if (!res.ok) {
+      setLinkError(json.error || "Nu s-a putut salva. Încearcă din nou.");
+      return;
+    }
+
+    setData((d) =>
+      d
+        ? {
+            ...d,
+            affiliate: { ...d.affiliate, referralCode: json.referralCode, referralLink: json.referralLink },
+          }
+        : d
+    );
+    setEditingLink(false);
   }
 
   if (loading || !data) {
@@ -104,27 +142,71 @@ export default function AffiliateDashboardPage() {
             <CardTitle className="text-lg">Link-ul tău de afiliere</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="flex flex-col gap-3 sm:flex-row">
-              <div className="flex-1 truncate rounded-md border border-surface-muted bg-surface-alt px-4 py-3 font-mono text-sm text-ink">
-                {affiliate.referralLink}
+            {editingLink ? (
+              <div>
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
+                  <span className="whitespace-nowrap font-mono text-sm text-ink-muted">
+                    {affiliate.referralLink.slice(
+                      0,
+                      affiliate.referralLink.length - affiliate.referralCode.length
+                    )}
+                  </span>
+                  <input
+                    type="text"
+                    value={linkInput}
+                    onChange={(e) => setLinkInput(e.target.value)}
+                    className="flex-1 rounded-md border border-surface-muted px-3 py-2 font-mono text-sm text-ink focus:border-court focus:outline-none"
+                    placeholder="numele-tau"
+                    autoFocus
+                  />
+                </div>
+                {linkError && <p className="mt-2 text-sm text-red-600">{linkError}</p>}
+                <div className="mt-3 flex gap-2">
+                  <Button size="sm" onClick={saveLink} disabled={savingLink}>
+                    {savingLink ? "Se salvează…" : "Salvează"}
+                  </Button>
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setEditingLink(false)}
+                    disabled={savingLink}
+                  >
+                    <X className="mr-1 h-4 w-4" /> Renunță
+                  </Button>
+                </div>
+                <p className="mt-3 text-xs text-ink-muted">
+                  Doar litere mici, cifre și cratime. Dacă ai distribuit deja link-ul vechi, acela
+                  va înceta să funcționeze.
+                </p>
               </div>
-              <Button onClick={copyLink} className="shrink-0">
-                {copied ? (
-                  <>
-                    <Check className="mr-2 h-4 w-4" /> Copiat
-                  </>
-                ) : (
-                  <>
-                    <Copy className="mr-2 h-4 w-4" /> Copiază link-ul
-                  </>
-                )}
-              </Button>
-            </div>
-            <p className="mt-3 text-sm text-ink-muted">
-              Codul tău unic: <span className="font-semibold text-ink">{affiliate.referralCode}</span>
-              {" · "}Câștigi <span className="font-semibold text-ink">$30 (33.7%)</span> din fiecare
-              vânzare de $89 generată prin acest link.
-            </p>
+            ) : (
+              <>
+                <div className="flex flex-col gap-3 sm:flex-row">
+                  <div className="flex-1 truncate rounded-md border border-surface-muted bg-surface-alt px-4 py-3 font-mono text-sm text-ink">
+                    {affiliate.referralLink}
+                  </div>
+                  <Button onClick={copyLink} className="shrink-0">
+                    {copied ? (
+                      <>
+                        <Check className="mr-2 h-4 w-4" /> Copiat
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="mr-2 h-4 w-4" /> Copiază link-ul
+                      </>
+                    )}
+                  </Button>
+                  <Button variant="outline" onClick={startEditingLink} className="shrink-0">
+                    <Pencil className="mr-2 h-4 w-4" /> Editează
+                  </Button>
+                </div>
+                <p className="mt-3 text-sm text-ink-muted">
+                  Codul tău unic: <span className="font-semibold text-ink">{affiliate.referralCode}</span>
+                  {" · "}Câștigi <span className="font-semibold text-ink">$30 (33.7%)</span> din fiecare
+                  vânzare de $89 generată prin acest link.
+                </p>
+              </>
+            )}
           </CardContent>
         </Card>
 

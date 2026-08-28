@@ -93,11 +93,36 @@ export async function getCurrentAffiliate(): Promise<Affiliate | null> {
 export function generateReferralCode(fullName: string): string {
   const base = fullName
     .normalize("NFD")
-    .toUpperCase()
-    .replace(/[^A-Z]/g, "")
-    .slice(0, 6) || "PARTNER";
-  const suffix = randomBytes(3).toString("hex").toUpperCase();
+    .toLowerCase()
+    .replace(/[^a-z]/g, "")
+    .slice(0, 10) || "partner";
+  const suffix = randomBytes(3).toString("hex");
   return `${base}-${suffix}`;
+}
+
+const RESERVED_CODES = new Set([
+  "admin", "login", "logout", "signup", "api", "dashboard", "affiliate",
+  "affiliates", "system", "about", "blog", "video-library", "go", "www",
+]);
+
+export function normalizeReferralCode(raw: string): string {
+  return raw
+    .trim()
+    .toLowerCase()
+    .normalize("NFD")
+    .replace(/[^a-z0-9-]/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+export function validateReferralCode(code: string): string | null {
+  if (code.length < 3) return "Link-ul trebuie să aibă minim 3 caractere.";
+  if (code.length > 40) return "Link-ul poate avea maxim 40 de caractere.";
+  if (!/^[a-z0-9][a-z0-9-]*[a-z0-9]$|^[a-z0-9]{3}$/.test(code)) {
+    return "Folosește doar litere mici, cifre și cratime (nu la început/sfârșit).";
+  }
+  if (RESERVED_CODES.has(code)) return "Acest text este rezervat, alege altul.";
+  return null;
 }
 
 export function referralLink(code: string): string {
