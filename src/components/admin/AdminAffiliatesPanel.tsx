@@ -12,8 +12,22 @@ import {
   Loader2,
   Copy,
   Trash2,
+  ChevronDown,
+  ChevronUp,
+  Landmark,
+  Wallet,
+  Check,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
+type Sale = {
+  id: number;
+  amount_cents: number;
+  commission_cents: number;
+  sale_date: string;
+  note: string | null;
+  paid_at: string | null;
+};
 
 type AffiliateRow = {
   id: number;
@@ -26,10 +40,20 @@ type AffiliateRow = {
   status: "pending" | "approved" | "rejected";
   created_at: string;
   approved_at: string | null;
+  payment_method: "bank" | "paypal" | null;
+  payment_full_name: string | null;
+  payment_address: string | null;
+  payment_iban: string | null;
+  payment_bank_name: string | null;
+  payment_swift: string | null;
+  paypal_email: string | null;
   total_sales: number;
   total_revenue_cents: number;
   total_commission_cents: number;
+  total_paid_cents: number;
+  total_pending_cents: number;
   total_clicks: number;
+  sales: Sale[];
 };
 
 function money(cents: number) {
@@ -67,6 +91,7 @@ export function AdminAffiliatesPanel() {
   const [saleAmount, setSaleAmount] = useState("89");
   const [saleCommission, setSaleCommission] = useState("30");
   const [saleNote, setSaleNote] = useState("");
+  const [expandedId, setExpandedId] = useState<number | null>(null);
 
   const load = useCallback(async () => {
     const res = await fetch("/api/admin/affiliates");
@@ -110,6 +135,17 @@ export function AdminAffiliatesPanel() {
     setBusyId(null);
   }
 
+  async function togglePaid(saleId: number, paid: boolean) {
+    setBusyId(saleId);
+    await fetch(`/api/admin/sales/${saleId}/paid`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ paid }),
+    });
+    await load();
+    setBusyId(null);
+  }
+
   async function copyLink(link: string) {
     await navigator.clipboard.writeText(link);
   }
@@ -134,16 +170,17 @@ export function AdminAffiliatesPanel() {
   const approved = affiliates.filter((a) => a.status === "approved");
   const rejected = affiliates.filter((a) => a.status === "rejected");
 
-  const totalCommissionOwed = approved.reduce((sum, a) => sum + a.total_commission_cents, 0);
+  const totalCommissionOwed = approved.reduce((sum, a) => sum + a.total_pending_cents, 0);
+  const totalPaidOut = approved.reduce((sum, a) => sum + a.total_paid_cents, 0);
   const totalRevenue = approved.reduce((sum, a) => sum + a.total_revenue_cents, 0);
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 lg:px-8">
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        <StatCard icon={Clock} label="În așteptare" value={pending.length} />
-        <StatCard icon={Users} label="Afiliați activi" value={approved.length} />
+        <StatCard icon={Clock} label="Aplicații în așteptare" value={pending.length} />
         <StatCard icon={Receipt} label="Venit generat (aprobați)" value={money(totalRevenue)} />
-        <StatCard icon={DollarSign} label="Comisioane totale" value={money(totalCommissionOwed)} />
+        <StatCard icon={Check} label="Comisioane plătite" value={money(totalPaidOut)} />
+        <StatCard icon={DollarSign} label="Comisioane de plătit" value={money(totalCommissionOwed)} />
       </div>
 
       {pending.length > 0 && (
@@ -238,13 +275,27 @@ export function AdminAffiliatesPanel() {
                     <p className="font-semibold text-ink">{a.total_clicks}</p>
                   </div>
                   <div>
-                    <p className="text-ink-muted">Comision datorat</p>
-                    <p className="font-semibold text-court">
-                      {money(a.total_commission_cents)}
-                    </p>
+                    <p className="text-ink-muted">Plătit</p>
+                    <p className="font-semibold text-tennis-dark">{money(a.total_paid_cents)}</p>
+                  </div>
+                  <div>
+                    <p className="text-ink-muted">De plătit</p>
+                    <p className="font-semibold text-court">{money(a.total_pending_cents)}</p>
                   </div>
                 </div>
                 <div className="flex gap-2">
+                  <Button
+                    size="sm"
+                    variant="outline"
+                    onClick={() => setExpandedId(expandedId === a.id ? null : a.id)}
+                  >
+                    {expandedId === a.id ? (
+                      <ChevronUp className="h-4 w-4" />
+                    ) : (
+                      <ChevronDown className="h-4 w-4" />
+                    )}
+                    <span className="ml-1">Detalii</span>
+                  </Button>
                   <Button
                     size="sm"
                     variant="outline"
@@ -304,6 +355,77 @@ export function AdminAffiliatesPanel() {
                   <Button size="sm" disabled={busyId === a.id} onClick={() => submitSale(a.id)}>
                     Salvează
                   </Button>
+                </div>
+              )}
+
+              {expandedId === a.id && (
+                <div className="mt-4 space-y-4 rounded-lg bg-surface-alt p-4">
+                  <div>
+                    <p className="mb-2 flex items-center gap-1.5 text-xs font-semibold uppercase tracking-wide text-ink-muted">
+                      {a.payment_method === "paypal" ? (
+                        <Wallet className="h-3.5 w-3.5" />
+                      ) : (
+                        <Landmark className="h-3.5 w-3.5" />
+                      )}
+                      Date de plată
+                    </p>
+                    {a.payment_method ? (
+                      <div className="text-sm text-ink">
+                        <p>{a.payment_full_name}</p>
+                        <p className="text-ink-muted">{a.payment_address}</p>
+                        {a.payment_method === "paypal" ? (
+                          <p>{a.paypal_email}</p>
+                        ) : (
+                          <p className="font-mono">
+                            {a.payment_iban}
+                            {a.payment_bank_name ? ` · ${a.payment_bank_name}` : ""}
+                            {a.payment_swift ? ` · ${a.payment_swift}` : ""}
+                          </p>
+                        )}
+                      </div>
+                    ) : (
+                      <p className="text-sm text-ink-muted">
+                        Afiliatul nu și-a completat încă datele de plată.
+                      </p>
+                    )}
+                  </div>
+
+                  {a.sales.length > 0 && (
+                    <div>
+                      <p className="mb-2 text-xs font-semibold uppercase tracking-wide text-ink-muted">
+                        Vânzări
+                      </p>
+                      <div className="space-y-2">
+                        {a.sales.map((s) => (
+                          <div
+                            key={s.id}
+                            className="flex flex-wrap items-center justify-between gap-2 rounded-md bg-white px-3 py-2 text-sm"
+                          >
+                            <span className="text-ink-muted">
+                              {new Date(s.sale_date).toLocaleDateString("ro-RO")} · {money(s.amount_cents)}{" "}
+                              vânzare · <span className="font-semibold text-court">{money(s.commission_cents)}</span> comision
+                              {s.note ? ` · ${s.note}` : ""}
+                            </span>
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              disabled={busyId === s.id}
+                              onClick={() => togglePaid(s.id, !s.paid_at)}
+                              className={s.paid_at ? "text-tennis-dark" : ""}
+                            >
+                              {s.paid_at ? (
+                                <>
+                                  <Check className="mr-1 h-4 w-4" /> Plătit
+                                </>
+                              ) : (
+                                "Marchează plătit"
+                              )}
+                            </Button>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               )}
             </div>

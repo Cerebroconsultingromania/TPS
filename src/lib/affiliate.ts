@@ -20,7 +20,48 @@ export type Affiliate = {
   status: "pending" | "approved" | "rejected";
   created_at: string;
   approved_at: string | null;
+  payment_method: "bank" | "paypal" | null;
+  payment_full_name: string | null;
+  payment_address: string | null;
+  payment_iban: string | null;
+  payment_bank_name: string | null;
+  payment_swift: string | null;
+  paypal_email: string | null;
 };
+
+export type PaymentInfoInput = {
+  paymentMethod: "bank" | "paypal";
+  paymentFullName: string;
+  paymentAddress: string;
+  paymentIban?: string;
+  paymentBankName?: string;
+  paymentSwift?: string;
+  paypalEmail?: string;
+};
+
+export function validatePaymentInfo(input: PaymentInfoInput): string | null {
+  if (!input.paymentFullName || input.paymentFullName.trim().length < 2) {
+    return "Introdu numele complet al titularului.";
+  }
+  if (!input.paymentAddress || input.paymentAddress.trim().length < 5) {
+    return "Introdu adresa completă.";
+  }
+  if (input.paymentMethod === "bank") {
+    if (!input.paymentIban || input.paymentIban.replace(/\s/g, "").length < 10) {
+      return "Introdu un IBAN valid.";
+    }
+    if (!input.paymentBankName || input.paymentBankName.trim().length < 2) {
+      return "Introdu numele băncii.";
+    }
+  } else if (input.paymentMethod === "paypal") {
+    if (!input.paypalEmail || !input.paypalEmail.includes("@")) {
+      return "Introdu un email PayPal valid.";
+    }
+  } else {
+    return "Alege o metodă de plată.";
+  }
+  return null;
+}
 
 export function hashPassword(password: string): { hash: string; salt: string } {
   const salt = randomBytes(16).toString("hex");

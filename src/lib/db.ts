@@ -64,6 +64,16 @@ export function ensureSchema(): Promise<void> {
           created_at TIMESTAMPTZ NOT NULL DEFAULT now()
         )
       `;
+      // Payout details, added after the initial schema -- ADD COLUMN IF NOT EXISTS
+      // so this stays safe to run against an already-populated table.
+      await db`ALTER TABLE affiliates ADD COLUMN IF NOT EXISTS payment_method TEXT`;
+      await db`ALTER TABLE affiliates ADD COLUMN IF NOT EXISTS payment_full_name TEXT`;
+      await db`ALTER TABLE affiliates ADD COLUMN IF NOT EXISTS payment_address TEXT`;
+      await db`ALTER TABLE affiliates ADD COLUMN IF NOT EXISTS payment_iban TEXT`;
+      await db`ALTER TABLE affiliates ADD COLUMN IF NOT EXISTS payment_bank_name TEXT`;
+      await db`ALTER TABLE affiliates ADD COLUMN IF NOT EXISTS payment_swift TEXT`;
+      await db`ALTER TABLE affiliates ADD COLUMN IF NOT EXISTS paypal_email TEXT`;
+      await db`ALTER TABLE affiliate_sales ADD COLUMN IF NOT EXISTS paid_at TIMESTAMPTZ`;
     })();
   }
   return schemaReady;
